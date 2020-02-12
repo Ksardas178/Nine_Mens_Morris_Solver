@@ -20,7 +20,7 @@ public class Main extends Application {
     final String fieldName = "src/resources/field_1";
     int team = 1;
     Turn t;
-    static int turnsDepth = 0;
+    static int turnsDepth = 2;
     TextField textField = new TextField();
     Button readTurnButton = new Button();
     Button newGameButton = new Button();

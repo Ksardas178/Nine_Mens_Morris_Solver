@@ -68,7 +68,7 @@ public class Field {
 
         for (Turn t : turns) {
             makeTurn(t, currTeam);
-            rate = predictRate(turnsDepth*2+1);//Предсказываем последствия (для себя)
+            rate = predictRate(turnsDepth*2+1);//Предсказываем последствия (для себя).
             if (rate > quality) {
                 quality = rate;
                 result = new Turn(t);
@@ -442,7 +442,7 @@ public class Field {
         int opponent = team % 2 + 1;
         int ways = paths4teamAdvantage(team, opponent);
         difference = things.getDifference(team, opponent);
-        if (!wayExists(team)) return Double.MIN_VALUE;
+        if (!wayExists(team)) return -Double.MAX_VALUE;
         return (difference + (ways / 10.0)) * 10.0 / (currentTurnNumber + 10.0);//Примерная оценка свободы хода. Для ранних ходов выше
     }
 
