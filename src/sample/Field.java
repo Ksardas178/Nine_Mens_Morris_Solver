@@ -56,7 +56,7 @@ public class Field {
         List<Turn> turns = new LinkedList<Turn>();
         Turn newTurn;
         int currTeam = currentTurnNumber % 2 + 1;
-        double quality = Double.MIN_VALUE;//Качество лучшего хода
+        double quality = -Double.MAX_VALUE;//Качество лучшего хода
         double rate;
         Turn result;
 
@@ -68,8 +68,8 @@ public class Field {
 
         for (Turn t : turns) {
             makeTurn(t, currTeam);
-            rate = predictRate(turnsDepth);//Предсказываем последствия (для себя)
-            if (rate >= quality) {
+            rate = predictRate(turnsDepth*2+1);//Предсказываем последствия (для себя)
+            if (rate > quality) {
                 quality = rate;
                 result = new Turn(t);
             }
@@ -389,7 +389,13 @@ public class Field {
                 || !wayExists(2) && (things.getElements(2) > 3)); //Если у второй команды нет ходов
     }
 
-    //public Boolean checkwin(){}
+    public String checkWin() {
+        if (checkEnd()) {
+            if ((things.getElements(1) == 2) || !wayExists(1)) return "2nd player wins";
+            else return "1st player wins";
+        }
+        return "";
+    }
 
 
     //endregion [FieldInfo]
@@ -400,7 +406,7 @@ public class Field {
     private double predictRate(int turnsDepth) {
         List<Turn> turns = new LinkedList<Turn>();
         int currTeam = currentTurnNumber % 2 + 1;
-        double quality = Double.MIN_VALUE;//Качество лучшего хода
+        double quality;//Качество текущего хода
         double rate;
         double result;
         boolean getLower = (turnsDepth % 2) == 1;
@@ -409,21 +415,21 @@ public class Field {
             turns = whereToPlaceNew(currTeam);
         else turns = whereToMove(currTeam);
 
-        result = (getLower ? Double.MAX_VALUE : Double.MIN_VALUE);//Рейтинг текущего хода. Минимакс
+        result = (getLower ? Double.MAX_VALUE : -Double.MAX_VALUE);//Рейтинг текущего хода. Минимакс
 
         if (turnsDepth == 0) //Завершение рекурсии
             for (Turn t : turns) {//Для всех возможных ходов оцениваем последствия
                 makeTurn(t, currTeam);
                 rate = getRate(currTeam);
-                if (result < rate) result = getRate(currTeam);//И возвращаем лучший положительный результат
+                if (rate>result) result = rate;//И возвращаем лучший положительный результат
                 reverseTurn(t);
             }
         else {
             for (Turn t : turns) {//Для каждого возможного хода
                 makeTurn(t, currTeam);
                 quality = predictRate(turnsDepth - 1);//Предсказываем его последствия
-                if ((getLower) ? (result > quality) : (result < quality))
-                    result = quality;//И возвращаем лучший/худший результат
+                if (getLower) result = Math.min(result, quality);//И возвращаем лучший/худший результат
+                else result = Math.max(result, quality);
                 reverseTurn(t);
             }
         }

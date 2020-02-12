@@ -20,7 +20,7 @@ public class Main extends Application {
     final String fieldName = "src/resources/field_1";
     int team = 1;
     Turn t;
-    static int turnsDepth = 5;
+    static int turnsDepth = 0;
     TextField textField = new TextField();
     Button readTurnButton = new Button();
     Button newGameButton = new Button();
@@ -98,7 +98,7 @@ public class Main extends Application {
             public void handle(long now) {
                 if (!field.checkEnd()) {
                     if (team == 2) {
-                        if (field.currentTurnNumber < 3) t = field.findTurn(3);
+                        if (field.currentTurnNumber < 3) t = field.findTurn(1);
                         else t = field.findTurn(turnsDepth);
                         field.makeTurn(t, team);
                         {
@@ -121,7 +121,7 @@ public class Main extends Application {
                         team = 2;//Меняем команду
                     }
                     System.out.println(t);*/
-                } else textField.setText("Game ended");
+                } else textField.setText("Game ended. " + field.checkWin());
             }
         };
         primaryStage.setTitle("Nine Men's Morris");

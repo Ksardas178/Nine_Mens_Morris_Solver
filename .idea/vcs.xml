@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Algorithms" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Programming/Pascal/MMJE2" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Учеба/1 курс/Аня материалы/BattleShip" vcs="Git" />
